@@ -24,8 +24,10 @@ namespace Lopushok
         List<Product> prdList = new List<Product>();// Список из 20 продктов для их отображения;
         List<Grid> gridList = new List<Grid>();// Список из 20 Grid в котрых будет отображятся информация о продуктах
         List<int> pages = new List<int>();//Список страниц
+        List<string> filterList = new List<string>();
         Grid productGrid = new Grid();
         List<Product> prdListAll = new List<Product>();//содержит информацию о всех продуктах, нужен для одновременной поиска, сортировки и фильтрации
+        List<Product> prdListFilt = new List<Product>();
         bool sortType = true;
 
         //StackPanel productPanel = new StackPanel();
@@ -37,6 +39,14 @@ namespace Lopushok
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            filterList.Add("Все типы");
+            filterBox.Items.Add("-Все типы-");
+            foreach (MaterialType materialType in dataBase.MaterialType)
+            {
+                filterList.Add(materialType.Title);
+                filterBox.Items.Add(materialType.Title);
+            }
+            
             foreach (Product product in dataBase.Product)//заполнение списка продукции
             {
                 prdListAll.Add(product);
@@ -50,6 +60,7 @@ namespace Lopushok
         }
         private void panelFill()//Заполняте страницу стеками с продуктами
         {
+            HookUpEventHandlers1();
             gridList.Clear();
             productPanel.Children.Clear();
             productPanel.Height = (productGrid.MaxHeight + 10) * 20;
@@ -59,6 +70,7 @@ namespace Lopushok
                 gridList[i] = productGridFill(prdList[i]);
                 productPanel.Children.Add(gridList[i]);
             }
+            HookUpEventHandlers();
         }
         private Grid productGridFill(Product product) //Заполняет сетку информацией при этом эту сетку потом возварщает 
         {
@@ -69,7 +81,7 @@ namespace Lopushok
             if (product.Image.Length > 0)//Проверка на наличие картинки
             {
                 Image image = new Image();
-                BitmapImage image1 = new BitmapImage(new Uri($@"{Environment.CurrentDirectory}{product.Image}"));// Так указывается полный путь к файлу, относительная ссылка почему-то не работает
+                BitmapImage image1 = new BitmapImage(new Uri($@"{Environment.CurrentDirectory}\{product.Image}"));// Так указывается полный путь к файлу, относительная ссылка почему-то не работает
                 image.Stretch = Stretch.Uniform;
                 image.Source = image1;
                 Grid.SetColumn(image, 0);// задает в каком столбце в сетке будет находится
@@ -92,7 +104,7 @@ namespace Lopushok
             TextBlock txtTypeName = new TextBlock();
             txtTypeName.Margin = new Thickness(5,0,0,0);//отступ для красоты
             txtTypeName.Text = $"{product.ProductType.Title}|{product.Title}";
-            txtTypeName.FontSize = 20;
+            txtTypeName.FontSize = 22;
             txtTypeName.FontWeight = FontWeights.Bold;
             txtTypeName.VerticalAlignment = VerticalAlignment.Center;
             Grid.SetColumn(txtTypeName, 1);
@@ -103,7 +115,7 @@ namespace Lopushok
             TextBlock txtArticle = new TextBlock();
             txtArticle.Margin = new Thickness(5, 0, 0, 0);
             txtArticle.Text = $"Артикул: {product.ArticleNumber}";
-            txtArticle.FontSize = 14;
+            txtArticle.FontSize = 16;
             Grid.SetColumn(txtArticle, 1);
             Grid.SetRow(txtArticle, 1);
             grid.Children.Add(txtArticle);
@@ -117,7 +129,7 @@ namespace Lopushok
                 mtrList += $"{productMaterial.Material.Title}; ";
             }
             txtMaterials.Text = mtrList;
-            txtMaterials.FontSize = 14;
+            txtMaterials.FontSize = 16;
             txtMaterials.TextWrapping = TextWrapping.Wrap;
             Grid.SetColumn(txtMaterials, 1);
             Grid.SetRow(txtMaterials, 2);
@@ -126,7 +138,7 @@ namespace Lopushok
             //Цена
             TextBlock txtPrice = new TextBlock();
             txtPrice.Text = $"Стоимость:\n{product.MinCostForAgent} руб.";
-            txtPrice.FontSize = 20;
+            txtPrice.FontSize = 22;
             txtPrice.TextAlignment = TextAlignment.Center;
             txtPrice.VerticalAlignment = VerticalAlignment.Center;
             Grid.SetColumn(txtPrice, 2);
@@ -240,8 +252,19 @@ namespace Lopushok
             {
                 if (product.Title.ToLower().Contains(searchBox.Text.ToLower()))
                 {
-                    prdListAll.Add(product);
+                    if (filterBox.SelectedIndex > 0)
+                    {
+                        Filter(product);
+                    }
+                    else
+                    {
+                        prdListAll.Add(product);
+                    }
                 }
+            }
+            if (sortBox.SelectedIndex > 0)
+            {
+                Sort();
             }
             PagesLoad();
             ProductListLoad(nowPage);
@@ -254,61 +277,8 @@ namespace Lopushok
 
         }
 
-        private void sortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Sort()
         {
-            switch(sortBox.SelectedIndex)
-            {
-                case 0:
-                    if (sortType == true)
-                    {
-                        prdListAll.Sort((x, y) => string.Compare(x.Title, y.Title));
-                    }
-                    else if (sortType == false)
-                    {
-                        prdListAll.Sort((x, y) => y.Title.CompareTo(x.Title));
-                    }
-                    ProductListLoad(nowPage);
-                    panelFill();
-                    break;
-                case 1:
-                    if (sortType == true)
-                    {
-                        prdListAll.Sort((x, y) => x.ProductionWorkshopNumber.ToString().CompareTo(y.ProductionWorkshopNumber.ToString()));
-                    }
-                    else if (sortType == false)
-                    {
-                        prdListAll.Sort((x, y) => y.ProductionWorkshopNumber.ToString().CompareTo(x.ProductionWorkshopNumber.ToString()));
-                    }
-                    ProductListLoad(nowPage);
-                    panelFill();
-                    break;
-                case 2:
-                    if (sortType == true)
-                    {
-                        prdListAll.Sort((x, y) => x.MinCostForAgent.CompareTo(y.MinCostForAgent));
-                    }
-                    else if (sortType == false)
-                    {
-                        prdListAll.Sort((x, y) => y.MinCostForAgent.CompareTo(x.MinCostForAgent));
-                    }
-                    ProductListLoad(nowPage);
-                    panelFill();
-                    break;
-            }
-        }
-
-        private void btnUpDown_Click(object sender, RoutedEventArgs e)
-        {
-            if (sortType == true)
-            {
-                sortType = false;
-                btnUpDown.Content = "▼";
-            }
-            else if (sortType == false)
-            {
-                sortType = true;
-                btnUpDown.Content = "▲";
-            }
             switch (sortBox.SelectedIndex)
             {
                 case 0:
@@ -348,6 +318,99 @@ namespace Lopushok
                     panelFill();
                     break;
             }
+        }
+
+        private void sortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Sort();
+        }
+
+        private void btnUpDown_Click(object sender, RoutedEventArgs e)
+        {
+            if (sortType == true)
+            {
+                sortType = false;
+                btnUpDown.Content = "▼";
+            }
+            else if (sortType == false)
+            {
+                sortType = true;
+                btnUpDown.Content = "▲";
+            }
+            Sort();
+        }
+
+        private void filterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            prdListAll.Clear();
+            foreach (Product product in dataBase.Product)
+            {
+                if (product.Title.ToLower().Contains(searchBox.Text.ToLower()))
+                {
+                    if (filterBox.SelectedIndex != 0)
+                    {
+                        Filter(product);
+                    }
+                    else
+                    {
+                        prdListAll.Add(product);
+                    }
+                }
+            }
+            if (sortBox.SelectedIndex > 0)
+            {
+                Sort();
+            }
+            PagesLoad();
+            ProductListLoad(nowPage);
+            if (prdListAll.Count > 0)
+                pageNumber.Text = $"{nowPage}/{pages.Count}";
+            else
+                pageNumber.Text = $"0/{pages.Count}";
+            panelFill();
+
+
+        }
+
+        private void Filter(Product product)
+        {
+            bool mtrCheck;
+            if (filterBox.SelectedIndex > 0)
+            {
+                mtrCheck = false;
+                foreach (ProductMaterial productMaterial in product.ProductMaterial)
+                {
+                    if (productMaterial.Material.MaterialType.Title == filterBox.SelectedItem.ToString())
+                    {
+                        mtrCheck = true;
+                    }
+                }
+                if (mtrCheck == true)
+                {
+                    prdListAll.Add(product);
+                }
+            }
+        }
+        private void HookUpEventHandlers1()
+        {
+            foreach (var p in gridList)
+            {
+                p.MouseDown -= P_MouseDown;
+            }
+        }
+        private void HookUpEventHandlers()
+        {
+            foreach (var p in gridList)
+            {
+                p.MouseDown += P_MouseDown;
+            }
+        }
+
+        private void P_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ProductInfo productInfo = new ProductInfo();
+            productInfo.Show();
+            this.Hide();
         }
     }
 }

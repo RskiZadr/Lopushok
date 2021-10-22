@@ -5,19 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lopushok"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="400" MinHeight="100" Loaded="Window_Loaded">
+        Title="Лопушок" Height="450" Width="800" MinWidth="400" MinHeight="100" Loaded="Window_Loaded" FontFamily="Gabriola" Topmost="True" Icon="Lopushok.ico">
     <Window.Resources>
-        <Style x:Key="ProductGrid">
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFFBE618" />
+        <Style x:Key="ActiveColor">
             <Setter Property="Control.Background" Value="Azure"/>
         </Style>
     </Window.Resources>
     <Grid x:Name="layoutGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="17*"/>
+            <ColumnDefinition Width="16*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
             <RowDefinition Height="70*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Background="LightGray" Grid.Row="0" MinWidth="200" MinHeight="50">
+        <Grid Background="#FFFFFF" Grid.Row="0" MinWidth="200" MinHeight="50" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*"/>
                 <RowDefinition Height="60*"/>
@@ -28,34 +33,32 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="25*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="30" Margin="10,4,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="342" FontSize="16" TextChanged="TextBox_TextChanged"/>
-            <ComboBox x:Name="sortBox" Grid.Column="1" HorizontalAlignment="Left" Margin="20,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="176" Height="29" FontSize="16" SelectionChanged="sortBox_SelectionChanged">
+            <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="30" Margin="10,4,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="342" FontSize="18" TextChanged="TextBox_TextChanged" Background="#FFCEFFF9"/>
+            <ComboBox x:Name="sortBox" Grid.Column="1" HorizontalAlignment="Left" Margin="20,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="176" Height="29" FontSize="18" SelectionChanged="sortBox_SelectionChanged" Background="#FFCEFFF9">
                 <ComboBoxItem Content="наименование"/>
                 <ComboBoxItem Content="номер производственного цеха"/>
                 <ComboBoxItem Content="минимальная стоимость для агента"/>
             </ComboBox>
-            <ComboBox x:Name="filterBox" Grid.Column="3" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="176" Height="29" FontSize="16">
-                <ComboBoxItem Content="Все типы"/>
-            </ComboBox>
-            <Label Content="Поиск" HorizontalAlignment="Left" Margin="10,0,0,0" Height="30" VerticalAlignment="Bottom" Width="342" FontSize="16"/>
-            <Label Content="Сортировка" HorizontalAlignment="Left" Margin="20,0,0,0" Height="30" VerticalAlignment="Bottom" Width="205" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16"/>
-            <Label Content="Фильтрация" HorizontalAlignment="Left" Margin="10,0,0,0" Height="30" VerticalAlignment="Bottom" Width="176" Grid.Column="3" FontSize="16"/>
+            <ComboBox x:Name="filterBox" Grid.Column="3" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="176" Height="29" FontSize="18" SelectionChanged="filterBox_SelectionChanged" Background="#ffCEFFF9"/>
+            <Label Content="Поиск" HorizontalAlignment="Left" Margin="10,0,0,0" Height="30" VerticalAlignment="Bottom" Width="342" FontSize="18"/>
+            <Label Content="Сортировка" HorizontalAlignment="Left" Margin="20,0,0,0" Height="30" VerticalAlignment="Bottom" Width="205" Grid.Column="1" Grid.ColumnSpan="2" FontSize="18"/>
+            <Label Content="Фильтрация" HorizontalAlignment="Left" Margin="10,0,0,0" Height="30" VerticalAlignment="Bottom" Width="176" Grid.Column="3" FontSize="18"/>
             <Button  Content="▲"  x:Name="btnUpDown" Grid.Column="2" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="29" Height="29" Click="btnUpDown_Click"/>
         </Grid>
-        <ScrollViewer Grid.Row="1">
-            <StackPanel x:Name="productPanel" Background="LightGray">
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+            <StackPanel x:Name="productPanel" Background="#CEFFF9">
 
             </StackPanel>
         </ScrollViewer>
-        <Grid Grid.Row="2" Background="LightGray" MinHeight="18" MinWidth="100">
+        <Grid Grid.Row="2" Background="#FFFFFF" MinHeight="18" MinWidth="100" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="85*"/>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="&lt;" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="40" Grid.Column="1" Height="42" FontSize="18" Click="Button_Click"/>
-            <Button Content=">" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="40" Grid.Column="3" Height="42" FontSize="18" Click="Button_Click_1"/>
+            <Button Content="&lt;" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="40" Grid.Column="1" Height="42" FontSize="18" Click="Button_Click" Background="White"/>
+            <Button Content=">" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="40" Grid.Column="3" Height="42" FontSize="18" Click="Button_Click_1" Background="White"/>
             <TextBlock x:Name ="pageNumber" VerticalAlignment="Bottom" Grid.Column="2"  TextAlignment="Center" TextWrapping="Wrap" Text="3/7" Width="40" FontSize="20" Height="28" Margin="0,0,0,7"/>
         </Grid>
     </Grid>
