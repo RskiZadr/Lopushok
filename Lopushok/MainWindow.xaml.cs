@@ -68,6 +68,7 @@ namespace Lopushok
             {
                 gridList.Add(productGrid);
                 gridList[i] = productGridFill(prdList[i]);
+                gridList[i].Name = $"Grid{i}";
                 productPanel.Children.Add(gridList[i]);
             }
             HookUpEventHandlers();
@@ -76,6 +77,7 @@ namespace Lopushok
         {
             Grid grid = new Grid();
             createProductGrid(grid);//Создание макета сетки
+
 
             //Картинка
             if (product.Image.Length > 0)//Проверка на наличие картинки
@@ -245,7 +247,7 @@ namespace Lopushok
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)//Поиск
         {
             prdListAll.Clear();
             foreach (Product product in dataBase.Product)
@@ -277,7 +279,7 @@ namespace Lopushok
 
         }
 
-        private void Sort()
+        private void Sort()//Сортировка
         {
             switch (sortBox.SelectedIndex)
             {
@@ -320,12 +322,12 @@ namespace Lopushok
             }
         }
 
-        private void sortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void sortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)//Кнопка выбора сортировки
         {
             Sort();
         }
 
-        private void btnUpDown_Click(object sender, RoutedEventArgs e)
+        private void btnUpDown_Click(object sender, RoutedEventArgs e)//Смена сортировка по возростанию или по убыванию
         {
             if (sortType == true)
             {
@@ -340,7 +342,7 @@ namespace Lopushok
             Sort();
         }
 
-        private void filterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void filterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)//Кнопка фильтрации 
         {
             prdListAll.Clear();
             foreach (Product product in dataBase.Product)
@@ -372,7 +374,7 @@ namespace Lopushok
 
         }
 
-        private void Filter(Product product)
+        private void Filter(Product product)//Фильтрация
         {
             bool mtrCheck;
             if (filterBox.SelectedIndex > 0)
@@ -408,6 +410,7 @@ namespace Lopushok
 
         private void P_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            var prdGrid = (Grid)sender;
             ProductInfo productInfo = new ProductInfo();
             productInfo.Show();
             this.Hide();
