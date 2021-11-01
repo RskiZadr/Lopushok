@@ -125,5 +125,8 @@
   <ItemGroup>
     <Resource Include="Lopushok.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="picture.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

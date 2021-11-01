@@ -5,86 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lopushok"
         mc:Ignorable="d"
-        Title="ProductInfo" Height="450" Width="510.262" Loaded="Window_Loaded_1">
+        Title="ProductInfo" Height="399.976" Width="646.201" Loaded="Window_Loaded" IsTabStop="True" TabIndex="1" AllowDrop="True" FontFamily="Gabriola">
     <Window.Resources>
-        <CollectionViewSource x:Name="productViewSource" x:Key="productViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Product}, CreateList=True}"/>
-        <CollectionViewSource x:Name="productTypeViewSource" x:Key="productTypeViewSource" d:DesignSource="{d:DesignInstance {x:Type local:ProductType}, CreateList=True}"/>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="grid1" DataContext="{StaticResource productViewSource}" HorizontalAlignment="Left" Margin="131,95,0,0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-        </Grid>
-        <Grid x:Name="grid2" DataContext="{StaticResource productViewSource}" HorizontalAlignment="Left" Margin="151,132,0,0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-        </Grid>
-        <Grid x:Name="grid3" DataContext="{StaticResource productTypeViewSource}" HorizontalAlignment="Left" Margin="151,178,0,0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-        </Grid>
-        <Grid x:Name="grid4" DataContext="{StaticResource productViewSource}" HorizontalAlignment="Left" Margin="69,236,0,0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-        </Grid>
-        <Grid x:Name="grid5" DataContext="{StaticResource productViewSource}" HorizontalAlignment="Left" Margin="49,288,0,0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-        </Grid>
-        <Grid x:Name="grid6" DataContext="{StaticResource productViewSource}" HorizontalAlignment="Left" Margin="99,114,0,0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Label Content="Article Number:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-            <TextBox x:Name="articleNumberTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding ArticleNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Production Person Count:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
-            <TextBox x:Name="productionPersonCountTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="4" Text="{Binding ProductionPersonCount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Production Workshop Number:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
-            <TextBox x:Name="productionWorkshopNumberTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding ProductionWorkshopNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Product Type ID:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-            <ComboBox x:Name="productTypeIDComboBox" Grid.Column="1" DisplayMemberPath="ProductTypeID" HorizontalAlignment="Left" Height="Auto" ItemsSource="{Binding}" Margin="3" Grid.Row="2" VerticalAlignment="Center" Width="120" IsTabStop="False">
-                <ComboBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel/>
-                    </ItemsPanelTemplate>
-                </ComboBox.ItemsPanel>
-            </ComboBox>
-            <Label Content="Title:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
-            <TextBox x:Name="titleTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding Title, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-        </Grid>
+        <TextBox x:Name="artTxtBox" HorizontalAlignment="Left" Height="23" Margin="91,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Артикул" HorizontalAlignment="Left" Margin="31,68,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.551,2.157"/>
+        <TextBox x:Name="nameTxtBox" HorizontalAlignment="Left" Height="23" Margin="91,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Название" HorizontalAlignment="Left" Margin="23,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.668,2.474"/>
+        <TextBox x:Name="prcntTxtBox" HorizontalAlignment="Left" Height="23" Margin="91,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Персонал ед." HorizontalAlignment="Left" Margin="3,157,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="nbmTxtBox" HorizontalAlignment="Left" Height="23" Margin="91,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
+        <Label Content="№ фабрики" HorizontalAlignment="Left" Margin="11,183,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="typeListBox" HorizontalAlignment="Left" Margin="91,131,0,0" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Тип товара" HorizontalAlignment="Left" Margin="15,127,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="imageBox" HorizontalAlignment="Left" Margin="364,72,0,0" Width="250" Height="250" VerticalAlignment="Top" Source="picture.png" Stretch="Uniform" MouseDown="imageBox_MouseDown"/>
+        <Button Content="Сохранить" HorizontalAlignment="Left" Margin="393,339,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" IsDefault="True"/>
+        <Button Content="Выйти" HorizontalAlignment="Left" Margin="553,339,0,0" VerticalAlignment="Top" Width="75" IsCancel="True"/>
+        <TextBox x:Name="PriceTxtBox" HorizontalAlignment="Left" Height="23" Margin="91,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Стоимость" HorizontalAlignment="Left" Margin="11,214,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="DesTxtBox" HorizontalAlignment="Left" Height="78" Margin="90,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="251" UndoLimit="1000"/>
+        <Label Content="Описание" HorizontalAlignment="Left" Margin="20,248,0,0" VerticalAlignment="Top"/>
+        <Button Content="Удалить" IsDefault="True" HorizontalAlignment="Left" Margin="473,339,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
 
     </Grid>
 </Window>

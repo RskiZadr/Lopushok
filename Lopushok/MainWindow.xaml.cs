@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace Lopushok
 {
@@ -63,12 +64,12 @@ namespace Lopushok
             HookUpEventHandlers1();
             gridList.Clear();
             productPanel.Children.Clear();
-            productPanel.Height = (productGrid.MaxHeight + 10) * 20;
+            productPanel.Height = (productGrid.MaxHeight + 10) * prdList.Count;
             for (int i = 0; i < prdList.Count;i++)
             {
                 gridList.Add(productGrid);
                 gridList[i] = productGridFill(prdList[i]);
-                gridList[i].Name = $"Grid{i}";
+                gridList[i].Name = $"Grid{prdList[i].ID}";
                 productPanel.Children.Add(gridList[i]);
             }
             HookUpEventHandlers();
@@ -78,9 +79,8 @@ namespace Lopushok
             Grid grid = new Grid();
             createProductGrid(grid);//Создание макета сетки
 
-
             //Картинка
-            if (product.Image.Length > 0)//Проверка на наличие картинки
+            if (product.Image != null && product.Image.Length > 0)//Проверка на наличие картинки
             {
                 Image image = new Image();
                 BitmapImage image1 = new BitmapImage(new Uri($@"{Environment.CurrentDirectory}\{product.Image}"));// Так указывается полный путь к файлу, относительная ссылка почему-то не работает
@@ -89,11 +89,14 @@ namespace Lopushok
                 Grid.SetColumn(image, 0);// задает в каком столбце в сетке будет находится
                 Grid.SetRowSpan(image, 3);// объеденяет заданное кол-во строк для данного элемента
                 grid.Children.Add(image);
+                image1 = null;
+                image = null;
             }
             else // картинка заглушка
             {
                 Image image = new Image();
-                BitmapImage image1 = new BitmapImage(new Uri($@"{Environment.CurrentDirectory}\products\picture.png"));
+                Uri uri = new Uri($@"{Environment.CurrentDirectory}\products\picture.png");
+                BitmapImage image1 = new BitmapImage(uri);
                 image.Stretch = Stretch.Uniform;
                 image.Source = image1;
                 Grid.SetColumn(image, 0);
@@ -412,8 +415,58 @@ namespace Lopushok
         {
             var prdGrid = (Grid)sender;
             ProductInfo productInfo = new ProductInfo();
-            productInfo.Show();
-            this.Hide();
+            productInfo.database = dataBase;
+            string prdID = prdGrid.Name.Replace("Grid", null);
+            productInfo.product = dataBase.Product.Find((Convert.ToInt32(prdID)));
+            productInfo.MainWindow = this;
+            productInfo.ShowDialog();
+            
+            if (productInfo.DialogResult == true)
+            {
+                prdListAll.Clear();
+                foreach (Product product in dataBase.Product)//заполнение списка продукции
+                {
+                    prdListAll.Add(product);
+                }
+                PagesLoad();
+                nowPage = pages[0];
+                pageNumber.Text = $"{nowPage}/{pages.Count}";
+                ProductListLoad(nowPage);
+                panelFill();
+
+            }
+            else
+            {
+                return;
+            }
+            //productInfo.Show();
+            //this.Hide();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ProductInfo productInfo = new ProductInfo();
+            productInfo.database = dataBase;
+            productInfo.product = null;
+            productInfo.ShowDialog();
+            if (productInfo.DialogResult == true)
+            {
+                prdListAll.Clear();
+                foreach (Product product in dataBase.Product)//заполнение списка продукции
+                {
+                    prdListAll.Add(product);
+                }
+                PagesLoad();
+                nowPage = pages[0];
+                pageNumber.Text = $"{nowPage}/{pages.Count}";
+                ProductListLoad(nowPage);
+                panelFill();
+
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }
